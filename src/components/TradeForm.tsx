@@ -44,6 +44,16 @@ const sliderMarks = {
   100: '100%',
 };
 
+const marginSliderMarks = {
+  0: '1x',
+  16: '2x',
+  33: '5x',
+  50: '10x',
+  66: '20x',
+  83: '50x',
+  100: '100x',
+};
+
 export default function TradeForm({
   style,
   setChangeOrderRef,
@@ -71,6 +81,7 @@ export default function TradeForm({
   const [price, setPrice] = useState<number | undefined>(undefined);
   const [submitting, setSubmitting] = useState(false);
   const [sizeFraction, setSizeFraction] = useState(0);
+  const [margin, setMargin] = useState(0);
 
   const availableQuote =
     openOrdersAccount && market
@@ -178,6 +189,11 @@ export default function TradeForm({
 
     onSetBaseSize(formatted);
   };
+
+  const onMarginSliderChange = (value) => {
+    setMargin(value);
+    console.log('margin', margin, ' -> ', value, marginSliderMarks[value]);
+  }
 
   const postOnChange: SwitchChangeEventHandler = (checked) => {
     if (checked) {
@@ -316,6 +332,17 @@ export default function TradeForm({
           marks={sliderMarks}
           onChange={onSliderChange}
         />
+        <div>
+          Margin:
+          <Slider
+            value={margin}
+            marks={marginSliderMarks}
+            tooltipVisible={false}
+            step={null}
+            onChange={onMarginSliderChange}
+          />
+        </div>
+
         <div style={{ paddingTop: 18 }}>
           {'POST '}
           <Switch
